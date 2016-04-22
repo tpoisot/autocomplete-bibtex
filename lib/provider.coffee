@@ -1,5 +1,4 @@
 fs = require "fs"
-bibtexParse = require "zotero-bibtex-parse"
 fuzzaldrin = require "fuzzaldrin"
 XRegExp = require('xregexp').XRegExp
 titlecaps = require "./titlecaps"
@@ -7,34 +6,34 @@ citeproc = require "./citeproc"
 yaml = require "yaml-js"
 
 module.exports =
-class ReferenceProvider
+class referencesProvider
 
   atom.deserializers.add(this)
 
-  @deserialize: ({data}) -> new ReferenceProvider(data)
+  @deserialize: ({data}) -> new referencesProvider(data)
 
   constructor: (state) ->
     if state and Object.keys(state).length != 0
-      @bibtex = state.bibtex
+      @references = state.references
       @possibleWords = state.possibleWords
     else
-      @buildWordListFromFiles(atom.config.get "autocomplete-bibtex.bibtex")
+      @buildWordListFromFiles(atom.config.get "autocomplete-citeproc.references")
 
-    if @bibtex.length == 0
-      @buildWordListFromFiles(atom.config.get "autocomplete-bibtex.bibtex")
+    if @references.length == 0
+      @buildWordListFromFiles(atom.config.get "autocomplete-citeproc.references")
 
-    atom.config.onDidChange "autocomplete-bibtex.bibtex", (bibtexFiles) =>
-      @buildWordListFromFiles(bibtexFiles)
+    atom.config.onDidChange "autocomplete-citeproc.references", (referencesFiles) =>
+      @buildWordListFromFiles(referencesFiles)
 
-    resultTemplate = atom.config.get "autocomplete-bibtex.resultTemplate"
-    atom.config.observe "autocomplete-bibtex.resultTemplate", (resultTemplate) =>
+    resultTemplate = atom.config.get "autocomplete-citeproc.resultTemplate"
+    atom.config.observe "autocomplete-citeproc.resultTemplate", (resultTemplate) =>
       @resultTemplate = resultTemplate
 
     allwords = @possibleWords
 
     @provider =
-      selector: atom.config.get "autocomplete-bibtex.scope"
-      disableForSelector: atom.config.get "autocomplete-bibtex.ignoreScope"
+      selector: atom.config.get "autocomplete-citeproc.scope"
+      disableForSelector: atom.config.get "autocomplete-citeproc.ignoreScope"
       inclusionPriority: 1
       excludeLowerPriority: true
 
@@ -55,7 +54,7 @@ class ReferenceProvider
             for h in hits
               h.score = fuzzaldrin.score(p, h.author)
             hits.sort @compare
-            resultTemplate = atom.config.get "autocomplete-bibtex.resultTemplate"
+            resultTemplate = atom.config.get "autocomplete-citeproc.resultTemplate"
             for word in hits
               suggestion = {
                 text: resultTemplate.replace("[key]", word.key)
@@ -87,13 +86,13 @@ class ReferenceProvider
 
 
   serialize: -> {
-    deserializer: 'BibtexProvider'
-    data: { bibtex: @bibtex, possibleWords: @possibleWords }
+    deserializer: 'referencesProvider'
+    data: { references: @references, possibleWords: @possibleWords }
   }
 
   buildWordList: () =>
     possibleWords = []
-    for citation in @bibtex
+    for citation in @references
       if citation.entryTags and citation.entryTags.title and (citation.entryTags.author or citation.entryTags.editor)
         citation.entryTags.prettyTitle =
           @prettifyTitle citation.entryTags.title
@@ -128,31 +127,27 @@ class ReferenceProvider
 
     @possibleWords = possibleWords
 
-  buildWordListFromFiles: (bibtexFiles) =>
-    @readBibtexFiles(bibtexFiles)
+  buildWordListFromFiles: (referencesFiles) =>
+    @readreferencesFiles(referencesFiles)
     @buildWordList()
 
-  readReferenceFiles: (referenceFiles) =>
-    if referenceFiles.newValue?
-      referenceFiles = referenceFiles.newValue
+  readreferencesFiles: (referencesFiles) =>
+    console.log "Reading references"
+    if referencesFiles.newValue?
+      referencesFiles = referencesFiles.newValue
     # Make sure our list of files is an array, even if it's only one file
-    if not Array.isArray(referenceFiles)
-      referenceFiles = [referenceFiles]
+    if not Array.isArray(referencesFiles)
+      referencesFiles = [referencesFiles]
     try
       references = []
-      for file in referenceFiles
+      for file in referencesFiles
 
         # What type of file is this?
         ftype = file.split('.')
         ftype = ftype[ftype.length - 1]
 
-      for file in bibtexFiles
+      for file in referencesFiles
         if fs.statSync(file).isFile()
-          parser = new bibtexParse(fs.readFileSync(file, 'utf-8'))
-
-          if ftype is "bib"
-            parser = new bibtexParse(fs.readFileSync(file, 'utf-8'))
-            references = references.concat parser.parse()
 
           if ftype is "json"
             cpobject = JSON.parse fs.readFileSync(file, 'utf-8')
@@ -165,9 +160,9 @@ class ReferenceProvider
             references = references.concat citeproc_refs
 
         else
-          console.warn("'#{file}' does not appear to be a file, so autocomplete-bibtex will not try to parse it.")
+          console.warn("'#{file}' does not appear to be a file, so autocomplete-citeproc will not try to parse it.")
 
-      @bibtex = bibtex
+      @references = references
     catch error
       console.error error
 

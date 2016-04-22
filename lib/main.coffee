@@ -1,17 +1,17 @@
 fs = require "fs"
 
-BibtexProvider = require "./provider"
+referencesProvider = require "./provider"
 
 module.exports =
   config:
-    bibtex:
+    references:
       type: 'array'
       default: []
       items:
         type: 'string'
     scope:
       type: 'string'
-      default: '.source.gfm,.text.md'
+      default: '.text.md'
     ignoreScope:
       type: 'string'
       default: '.comment'
@@ -22,11 +22,11 @@ module.exports =
   activate: (state) ->
     reload = false
     if state
-      bibtexFiles = atom.config.get "autocomplete-bibtex.bibtex"
-      if not Array.isArray(bibtexFiles)
-        bibtexFiles = [bibtexFiles]
+      referencesFiles = atom.config.get "autocomplete-citeproc.references"
+      if not Array.isArray(referencesFiles)
+        referencesFiles = [referencesFiles]
       # reload everything if any files changed
-      for file in bibtexFiles
+      for file in referencesFiles
         stats = fs.statSync(file)
         if stats.isFile()
           if state.saveTime < stats.mtime.getTime()
@@ -35,21 +35,21 @@ module.exports =
     # Need to distinguish between the Autocomplete provider and the
     # containing class (which holds the serialize fn)
     if state and reload is false
-      @bibtexProvider = atom.deserializers.deserialize(state.provider)
+      @referencesProvider = atom.deserializers.deserialize(state.provider)
       #deserializer produces "undefined" if it fails, so double check
-      if not @bibtexProvider
-        @bibtexProvider = new BibtexProvider()
+      if not @referencesProvider
+        @referencesProvider = new referencesProvider()
     else
-      @bibtexProvider = new BibtexProvider()
+      @referencesProvider = new referencesProvider()
 
-    @provider = @bibtexProvider.provider
+    @provider = @referencesProvider.provider
 
   deactivate: ->
     @provider.registration.dispose()
 
   serialize: ->
     state = {
-      provider: @bibtexProvider.serialize()
+      provider: @referencesProvider.serialize()
       saveTime: new Date().getTime()
     }
     return state
