@@ -56,17 +56,26 @@ class referencesProvider
             hits.sort @compare
             resultTemplate = atom.config.get "autocomplete-citeproc.resultTemplate"
             for word in hits
+              # We cut the title to 32 chars
               tl = word.title.length
-              if tl > 40
-                word.title = word.title.substr(0, 39) + "\u2026"
+              if tl > 32
+                word.title = word.title.substr(0, 31) + "\u2026"
+              # A nifty logo for the different types
+              icon = "mortar-board"
+              if word.type == "article-journal"
+                icon = "file-text"
+              if word.type == "dataset"
+                icon = "database"
+              if word.type == "book"
+                icon = "book"
               suggestion = {
                 text: resultTemplate.replace("[key]", word.key)
                 displayText: word.title
                 replacementPrefix: prefix
-                leftLabel: word.key
+                # leftLabel: word.key
                 rightLabel: word.by
                 className: word.type
-                iconHTML: '<i class="icon-mortar-board"></i>'
+                iconHTML: "<i class='icon-#{icon}'></i>"
               }
               if word.in?
                 suggestion.description = word.in
@@ -112,10 +121,18 @@ class referencesProvider
           type: "#{citation.type}",
           title: "#{citation.prettyTitle}"
         }
-        if citation.url?
-          template.url = citation.url
-        if citation.in?
-          template.in = citation.in
+
+        # If the citation has a URL, we use a URL
+        if citation.URL?
+          template.url = citation.URL
+        # But a DOI is better, so we use that instead if applicable
+        if citation.DOI?
+          template.url = "http://dx.doi.org/#{citation.DOI}"
+
+        # Then we add the title of the container
+        if citation["container-title"]?
+          template.in = citation["container-title"]
+          # TODO add some infos like page, volume, issue, ...
 
         if citation.author?
           template.by = citation.authors
