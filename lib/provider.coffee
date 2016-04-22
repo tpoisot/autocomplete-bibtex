@@ -2,7 +2,6 @@ fs = require "fs"
 fuzzaldrin = require "fuzzaldrin"
 XRegExp = require('xregexp').XRegExp
 titlecaps = require "./titlecaps"
-citeproc = require "./citeproc"
 yaml = require "yaml-js"
 
 module.exports =
