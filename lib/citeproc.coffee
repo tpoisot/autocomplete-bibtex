@@ -6,7 +6,6 @@ module.exports =
     # Convert citeproc to internal format
     cp_references = []
     for ref in cp
-      console.log ref
       cp_object = {}
       cp_object.citationKey = ref.id
       cp_object.entryType = ref.type

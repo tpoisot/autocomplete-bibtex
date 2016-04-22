@@ -13,7 +13,6 @@ class referencesProvider
   @deserialize: ({data}) -> new referencesProvider(data)
 
   constructor: (state) ->
-    console.log "Constructor"
     if state and Object.keys(state).length != 0
       @references = state.references
       @possibleWords = state.possibleWords
@@ -47,14 +46,12 @@ class referencesProvider
         return 0
 
       getSuggestions: ({editor, bufferPosition}) ->
-        console.log "suggesting"
         prefix = @getPrefix(editor, bufferPosition)
         new Promise (resolve) ->
           if prefix[0] == "@"
             p = prefix.normalize().replace(/^@/, '')
             suggestions = []
             hits = fuzzaldrin.filter allwords, p, { key: 'author' }
-            console.log hits
             for h in hits
               h.score = fuzzaldrin.score(p, h.author)
             hits.sort @compare
@@ -62,7 +59,7 @@ class referencesProvider
             for word in hits
               suggestion = {
                 text: resultTemplate.replace("[key]", word.key)
-                displayText: word.label
+                displayText: word.title
                 replacementPrefix: prefix
                 leftLabel: word.key
                 rightLabel: word.by
@@ -95,47 +92,39 @@ class referencesProvider
   }
 
   buildWordList: () =>
-    console.log "build"
     possibleWords = []
     for citation in @references
-      console.log citation
-      if citation.entryTags and citation.entryTags.title and (citation.entryTags.author or citation.entryTags.editor)
-        console.log "Inner loop"
-        citation.entryTags.prettyTitle =
-          @prettifyTitle citation.entryTags.title
+      if (citation.author or citation.editor)
+        citation.prettyTitle = @prettifyTitle citation.title
 
-        citation.authors = []
-
-        if citation.entryTags.author?
+        if citation.author?
           citation.authors =
-            citation.entryTags.author.concat @cleanAuthors citation.entryTags.author
+            @prettifyAuthors citation.author.concat @cleanAuthors citation.author
+        if citation.editor?
+          citation.editors =
+            @prettifyAuthors citation.editor.concat @cleanAuthors citation.editor
 
-        console.log citation.authors
+        template = {
+          author: "unknown",
+          key: "#{citation.id}",
+          type: "#{citation.type}",
+          title: "#{citation.prettyTitle}"
+        }
+        if citation.url?
+          template.url = citation.url
+        if citation.in?
+          template.in = citation.in
 
-        if not citation.entryTags.editors
-          if citation.entryTags.editor?
-            citation.entryTags.authors =
-              citation.entryTags.authors.concat @cleanAuthors citation.entryTags.editor.split ' and '
+        if citation.author?
+          template.by = citation.authors
+          for author in citation.author
+            new_word = (JSON.parse(JSON.stringify(template)));
+            if author.family?
+              new_word.author = author.family
+            if author.litteral?
+              new_word.author = author.litteral
 
-        citation.entryTags.prettyAuthors =
-          @prettifyAuthors citation.entryTags.authors
-
-        console.log citation
-        for author in citation.entryTags.authors
-          new_word = {
-            author: @prettifyName(author),
-            key: citation.citationKey,
-            label: "#{citation.entryTags.prettyTitle}"
-            by: "#{citation.entryTags.prettyAuthors}"
-            type: "#{citation.entryTags.type}"
-          }
-          if citation.entryTags.url?
-            new_word.url = citation.entryTags.url
-          if citation.entryTags.in?
-            new_word.in = citation.entryTags.in
-          possibleWords.push new_word
-
-    console.log possibleWords
+            possibleWords.push new_word
 
     @possibleWords = possibleWords
 
@@ -144,7 +133,6 @@ class referencesProvider
     @buildWordList()
 
   readreferencesFiles: (referencesFiles) =>
-    console.log "Reading references"
     if referencesFiles.newValue?
       referencesFiles = referencesFiles.newValue
     # Make sure our list of files is an array, even if it's only one file
@@ -162,14 +150,10 @@ class referencesProvider
         if fs.statSync(file).isFile()
 
           if ftype is "json"
-            cpobject = JSON.parse fs.readFileSync(file, 'utf-8')
-            citeproc_refs = citeproc.parse cpobject
-            references = references.concat citeproc_refs
+            references = JSON.parse fs.readFileSync(file, 'utf-8')
 
           if ftype is "yaml"
-            cpobject = yaml.load fs.readFileSync(file, 'utf-8')
-            citeproc_refs = citeproc.parse cpobject
-            references = references.concat citeproc_refs
+            references = yaml.load fs.readFileSync(file, 'utf-8')
 
         else
           console.warn("'#{file}' does not appear to be a file, so autocomplete-citeproc will not try to parse it.")
@@ -184,17 +168,14 @@ class referencesProvider
     return title
 
   cleanAuthors: (authors) ->
-    return [{ familyName: 'Unknown' }] if not authors?
-
-    for author in authors
-      [familyName, personalName] =
-        if author.indexOf(', ') isnt -1 then author.split(', ') else [author]
-
-      { personalName: personalName, familyName: familyName }
+    if not authors?
+      return [{ family: 'Unknown' }]
+    else
+      return authors
 
   prettifyAuthors: (authors) ->
     name = @prettifyName authors[0]
     if authors.length > 1 then "#{name} et al." else "#{name}"
 
   prettifyName: (person, separator = ' ') ->
-      (if person.familyName? then person.familyName else '')
+      (if person.family? then person.family else '')
