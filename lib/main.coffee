@@ -22,9 +22,7 @@ module.exports =
   activate: (state) ->
     reload = false
     if state
-      console.log "state"
       referencesFiles = atom.config.get "autocomplete-citeproc.references"
-      console.log referencesFiles
       if not Array.isArray(referencesFiles)
         # TODO remove this bloc after testing
         referencesFiles = [referencesFiles]
