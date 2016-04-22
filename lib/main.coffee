@@ -11,7 +11,7 @@ module.exports =
         type: 'string'
     scope:
       type: 'string'
-      default: '.text.md'
+      default: '.source.gfm'
     ignoreScope:
       type: 'string'
       default: '.comment'
@@ -28,9 +28,9 @@ module.exports =
       # reload everything if any files changed
       for file in referencesFiles
         stats = fs.statSync(file)
-        if stats.isFile()
-          if state.saveTime < stats.mtime.getTime()
-            reload = true
+        # if stats.isFile()
+        #   if state.saveTime < stats.mtime.getTime()
+        #     reload = true
 
     # Need to distinguish between the Autocomplete provider and the
     # containing class (which holds the serialize fn)
