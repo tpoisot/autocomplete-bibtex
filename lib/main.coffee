@@ -11,7 +11,7 @@ module.exports =
         type: 'string'
     scope:
       type: 'string'
-      default: '.source.gfm'
+      default: '.gfm,.md'
     ignoreScope:
       type: 'string'
       default: '.comment'
