@@ -57,6 +57,9 @@ class referencesProvider
             hits.sort @compare
             resultTemplate = atom.config.get "autocomplete-citeproc.resultTemplate"
             for word in hits
+              tl = word.title.length
+              if tl > 40
+                word.title = word.title.substr(0, 39) + "\u2026"
               suggestion = {
                 text: resultTemplate.replace("[key]", word.key)
                 displayText: word.title
