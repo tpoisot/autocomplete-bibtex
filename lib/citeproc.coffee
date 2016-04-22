@@ -6,6 +6,7 @@ module.exports =
     # Convert citeproc to internal format
     cp_references = []
     for ref in cp
+      console.log ref
       cp_object = {}
       cp_object.citationKey = ref.id
       cp_object.entryType = ref.type
@@ -14,6 +15,7 @@ module.exports =
       tags.title = ref.title
       # Authors
       if ref.author?
+        tags.author = ref.author
         authors = []
         for author in ref.author
           na = {}
@@ -27,6 +29,7 @@ module.exports =
         tags.authors = authors
       # Editors
       if ref.editor?
+        tags.editor = ref.editor
         editors = []
         for editor in ref.editor
           na = {}

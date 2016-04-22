@@ -13,6 +13,7 @@ class referencesProvider
   @deserialize: ({data}) -> new referencesProvider(data)
 
   constructor: (state) ->
+    console.log "Constructor"
     if state and Object.keys(state).length != 0
       @references = state.references
       @possibleWords = state.possibleWords
@@ -25,11 +26,12 @@ class referencesProvider
     atom.config.onDidChange "autocomplete-citeproc.references", (referencesFiles) =>
       @buildWordListFromFiles(referencesFiles)
 
+    @buildWordListFromFiles(atom.config.get "autocomplete-citeproc.references")
+    allwords = @possibleWords
+
     resultTemplate = atom.config.get "autocomplete-citeproc.resultTemplate"
     atom.config.observe "autocomplete-citeproc.resultTemplate", (resultTemplate) =>
       @resultTemplate = resultTemplate
-
-    allwords = @possibleWords
 
     @provider =
       selector: atom.config.get "autocomplete-citeproc.scope"
@@ -45,12 +47,14 @@ class referencesProvider
         return 0
 
       getSuggestions: ({editor, bufferPosition}) ->
+        console.log "suggesting"
         prefix = @getPrefix(editor, bufferPosition)
         new Promise (resolve) ->
           if prefix[0] == "@"
             p = prefix.normalize().replace(/^@/, '')
             suggestions = []
             hits = fuzzaldrin.filter allwords, p, { key: 'author' }
+            console.log hits
             for h in hits
               h.score = fuzzaldrin.score(p, h.author)
             hits.sort @compare
@@ -91,17 +95,22 @@ class referencesProvider
   }
 
   buildWordList: () =>
+    console.log "build"
     possibleWords = []
     for citation in @references
+      console.log citation
       if citation.entryTags and citation.entryTags.title and (citation.entryTags.author or citation.entryTags.editor)
+        console.log "Inner loop"
         citation.entryTags.prettyTitle =
           @prettifyTitle citation.entryTags.title
 
-        citation.entryTags.authors = []
+        citation.authors = []
 
         if citation.entryTags.author?
-          citation.entryTags.authors =
-            citation.entryTags.authors.concat @cleanAuthors citation.entryTags.author.split ' and '
+          citation.authors =
+            citation.entryTags.author.concat @cleanAuthors citation.entryTags.author
+
+        console.log citation.authors
 
         if not citation.entryTags.editors
           if citation.entryTags.editor?
@@ -111,6 +120,7 @@ class referencesProvider
         citation.entryTags.prettyAuthors =
           @prettifyAuthors citation.entryTags.authors
 
+        console.log citation
         for author in citation.entryTags.authors
           new_word = {
             author: @prettifyName(author),
@@ -124,6 +134,8 @@ class referencesProvider
           if citation.entryTags.in?
             new_word.in = citation.entryTags.in
           possibleWords.push new_word
+
+    console.log possibleWords
 
     @possibleWords = possibleWords
 

@@ -22,15 +22,18 @@ module.exports =
   activate: (state) ->
     reload = false
     if state
+      console.log "state"
       referencesFiles = atom.config.get "autocomplete-citeproc.references"
+      console.log referencesFiles
       if not Array.isArray(referencesFiles)
+        # TODO remove this bloc after testing
         referencesFiles = [referencesFiles]
       # reload everything if any files changed
       for file in referencesFiles
         stats = fs.statSync(file)
-        # if stats.isFile()
-        #   if state.saveTime < stats.mtime.getTime()
-        #     reload = true
+        if stats.isFile()
+          if state.saveTime <= stats.mtime.getTime()
+            reload = true
 
     # Need to distinguish between the Autocomplete provider and the
     # containing class (which holds the serialize fn)
