@@ -1,3 +1,5 @@
+Copyright (c) 2016 Timothée Poisot
+---
 Copyright (c) 2014 Andrew Shields
 ---
 Copyright (c) 2014 FILSH Media GmbH
