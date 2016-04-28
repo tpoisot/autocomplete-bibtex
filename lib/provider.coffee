@@ -51,6 +51,7 @@ class referencesProvider
           if prefix[0] == "@"
             p = prefix.normalize().replace(/^@/, '')
             p = removeDiacritics(p)
+            console.log p
             suggestions = []
             hits = fuzzaldrin.filter allwords, p, { key: 'author' }
             for h in hits
@@ -60,8 +61,8 @@ class referencesProvider
             for word in hits
               # We cut the title to 32 chars
               tl = word.title.length
-              if tl > 32
-                word.title = word.title.substr(0, 31) + "\u2026"
+              if tl > 36
+                word.title = word.title.substr(0, 35) + "\u2026"
               # A nifty logo for the different types
               icon = "mortar-board"
               if word.type == "article-journal"
@@ -91,7 +92,7 @@ class referencesProvider
       getPrefix: (editor, bufferPosition) ->
         # Whatever your prefix regex might be
         regex = /@[\w-]+/
-        wordregex = XRegExp('(?:^|[\\p{WhiteSpace}\\p{Punctuation}])@[\\p{Letter}\\p{Number}\._-]*')
+        wordregex = XRegExp('(?:^|[\\p{WhiteSpace}\\p{Punctuation}])@[\\p{Letter}\\p{Number}\._-]*', 'A')
         cursor = editor.getCursors()[0]
         start = cursor.getBeginningOfCurrentWordBufferPosition({ wordRegex: wordregex, allowPrevious: false })
         end = bufferPosition
