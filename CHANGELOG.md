@@ -1,5 +1,9 @@
 # 0.0 series
 
+## 0.0.4
+
+- Search works when the first authors have names with ASCII characters
+
 ## 0.0.3
 
 - Unbork the description text
