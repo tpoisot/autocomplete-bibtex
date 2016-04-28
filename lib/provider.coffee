@@ -77,8 +77,13 @@ class referencesProvider
                 className: word.type
                 iconHTML: "<i class='icon-#{icon}'></i>"
               }
+              description = ""
               if word.in?
-                suggestion.description = word.in
+                description.concat(word.in)
+              if word.issued?
+                if word.issued.date-parts?
+                  description.concat(word.issued.date-parts[1][1])
+              suggestion.description = description
               if word.url?
                 suggestion.descriptionMoreURL = word.url
               suggestions = suggestions.concat suggestion
