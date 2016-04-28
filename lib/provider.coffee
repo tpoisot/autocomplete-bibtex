@@ -3,6 +3,7 @@ fuzzaldrin = require "fuzzaldrin"
 XRegExp = require('xregexp').XRegExp
 titlecaps = require "./titlecaps"
 yaml = require "yaml-js"
+removeDiacritics = require('diacritics').remove
 
 module.exports =
 class referencesProvider
@@ -152,9 +153,9 @@ class referencesProvider
           for author in citation.author
             new_word = (JSON.parse(JSON.stringify(template)));
             if author.family?
-              new_word.author = author.family
+              new_word.author = removeDiacritics(author.family)
             if author.litteral?
-              new_word.author = author.litteral
+              new_word.author = removeDiacritics(author.litteral)
 
             possibleWords.push new_word
 
