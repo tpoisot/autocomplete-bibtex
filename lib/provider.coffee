@@ -92,7 +92,7 @@ class referencesProvider
       getPrefix: (editor, bufferPosition) ->
         # Whatever your prefix regex might be
         regex = /@[\w-]+/
-        wordregex = XRegExp('(?:^|[\\p{WhiteSpace}\\p{Punctuation}])@[\\p{Letter}\\p{Number}\._-]*', 'A')
+        wordregex = XRegExp('(?:^|[\\p{WhiteSpace}\\p{Punctuation}])@[\\p{Letter}\\p{Number}\._-]*')
         cursor = editor.getCursors()[0]
         start = cursor.getBeginningOfCurrentWordBufferPosition({ wordRegex: wordregex, allowPrevious: false })
         end = bufferPosition

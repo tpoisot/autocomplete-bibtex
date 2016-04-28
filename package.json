@@ -1,4 +1,4 @@
-t{
+{
   "name": "autocomplete-citeproc",
   "main": "./lib/main",
   "version": "0.0.3",
