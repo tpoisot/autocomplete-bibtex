@@ -50,6 +50,7 @@ class referencesProvider
         new Promise (resolve) ->
           if prefix[0] == "@"
             p = prefix.normalize().replace(/^@/, '')
+            p = removeDiacritics(p)
             suggestions = []
             hits = fuzzaldrin.filter allwords, p, { key: 'author' }
             for h in hits
