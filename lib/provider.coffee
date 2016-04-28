@@ -79,10 +79,8 @@ class referencesProvider
               }
               description = ""
               if word.in?
+                console.log word.in
                 description.concat(word.in)
-              if word.issued?
-                if word.issued.date-parts?
-                  description.concat(word.issued.date-parts[1][1])
               suggestion.description = description
               if word.url?
                 suggestion.descriptionMoreURL = word.url
@@ -120,6 +118,11 @@ class referencesProvider
           citation.editors =
             @prettifyAuthors citation.editor.concat @cleanAuthors citation.editor
 
+        date = ""
+        if citation.issued?
+          if citation.issued.date-parts?
+            console.log citation.issued.date-parts
+            
         template = {
           author: "unknown",
           key: "#{citation.id}",
