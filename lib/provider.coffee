@@ -77,11 +77,10 @@ class referencesProvider
                 className: word.type
                 iconHTML: "<i class='icon-#{icon}'></i>"
               }
-              description = ""
-              if word.in?
-                console.log word.in
-                description.concat(word.in)
-              suggestion.description = description
+
+              if word.tagline?
+                suggestion.description = word.tagline
+
               if word.url?
                 suggestion.descriptionMoreURL = word.url
               suggestions = suggestions.concat suggestion
@@ -120,14 +119,23 @@ class referencesProvider
 
         date = ""
         if citation.issued?
-          if citation.issued.date-parts?
-            console.log citation.issued.date-parts
-            
+          if citation.issued["date-parts"]?
+            date = " (" + citation.issued["date-parts"][0][0] + ")"
+
+        # Then we add the title of the container
+        container = ""
+        if citation["container-title"]?
+          container = citation["container-title"]
+          # TODO add some infos like page, volume, issue, ...
+
+        tagline = "#{container}#{date}"
+
         template = {
           author: "unknown",
           key: "#{citation.id}",
           type: "#{citation.type}",
-          title: "#{citation.prettyTitle}"
+          title: "#{citation.prettyTitle}",
+          tagline: "#{tagline}"
         }
 
         # If the citation has a URL, we use a URL
@@ -137,10 +145,7 @@ class referencesProvider
         if citation.DOI?
           template.url = "http://dx.doi.org/#{citation.DOI}"
 
-        # Then we add the title of the container
-        if citation["container-title"]?
-          template.in = citation["container-title"]
-          # TODO add some infos like page, volume, issue, ...
+
 
         if citation.author?
           template.by = citation.authors
