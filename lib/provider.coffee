@@ -59,7 +59,7 @@ class referencesProvider
             hits.sort @compare
             resultTemplate = atom.config.get "autocomplete-citeproc.resultTemplate"
             for word in hits
-              # We cut the title to 32 chars
+              # We cut the title to 36 chars at most
               tl = word.title.length
               if tl > 36
                 word.title = word.title.substr(0, 35) + "\u2026"
