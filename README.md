@@ -1,7 +1,6 @@
 # autocomplete-citeproc package
 
-Adds citation key autocompletion to
-[autocomplete+] for [Atom].
+Adds citation key autocompletion to [autocomplete-plus] for [Atom].
 
 [autocomplete+]: https://github.com/saschagehlich/autocomplete-plus
 [Atom]: http://atom.io/
@@ -18,7 +17,7 @@ package is a fork of [autocomplete-bibtex], with the bibtex-only code removed.
 - Works with citeproc
 - Gives context for each reference, including URL to source
 - Icons for different types of documents
-- Uses autocomplete-+ 2
+- Uses autocomplete-plus version 2
 
 ## Screenshot
 
