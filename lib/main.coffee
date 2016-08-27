@@ -1,6 +1,7 @@
 fs = require "fs"
 
 referencesProvider = require "./provider"
+PathWatcher = require 'pathwatcher'
 
 module.exports =
   config:
@@ -29,6 +30,7 @@ module.exports =
         referencesFiles = [referencesFiles]
       # reload everything if any files changed
       for file in referencesFiles
+        console.log file
         try
           stats = fs.statSync(file)
           if stats.isFile()
@@ -36,7 +38,7 @@ module.exports =
               reload = true
               @stateTime = new Date().getTime()
         catch error
-          console.log "No references file"
+          console.log "No references file is present"
 
     # Need to distinguish between the Autocomplete provider and the
     # containing class (which holds the serialize fn)

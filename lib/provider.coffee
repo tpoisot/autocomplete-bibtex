@@ -54,6 +54,7 @@ class referencesProvider
             p = removeDiacritics(p)
             console.log p
             suggestions = []
+            console.log allwords
             hits = fuzzaldrin.filter allwords, p, { key: 'author' }
             for h in hits
               h.score = fuzzaldrin.score(p, h.author)
