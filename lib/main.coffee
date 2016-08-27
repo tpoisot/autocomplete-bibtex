@@ -1,9 +1,11 @@
 fs = require "fs"
+path = require 'path'
 
 referencesProvider = require "./provider"
-PathWatcher = require 'pathwatcher'
+pathWatcher = require 'pathwatcher'
 
 module.exports =
+
   config:
     references:
       type: 'array'
@@ -30,10 +32,12 @@ module.exports =
         referencesFiles = [referencesFiles]
       # reload everything if any files changed
       for file in referencesFiles
-        console.log file
         try
           stats = fs.statSync(file)
           if stats.isFile()
+            watcher = pathWatcher.watch file, (type, path) ->
+              if type == "change"
+                console.log "Reference file changed -- currently unimplemented"
             if state.saveTime <= stats.mtime.getTime()
               reload = true
               @stateTime = new Date().getTime()
@@ -53,6 +57,7 @@ module.exports =
     @provider = @referencesProvider.provider
 
   deactivate: ->
+    pathWatcher.closeAllWatchers()
     @provider.registration.dispose()
 
   serialize: ->

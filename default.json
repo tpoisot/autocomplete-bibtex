@@ -64,5 +64,21 @@
     },
     "type": "book",
     "URL": "http://www.test01.com"
+  },
+  {
+    "id" : "ITEM-9",
+    "page" : "1-7",
+    "type" : "article-journal",
+    "title": "not a test at all",
+    "author": [
+      {
+        "family": "D'Arcus",
+        "given": "Bruce",
+        "static-ordering": false
+      }
+    ],
+    "issued" : {
+      "date-parts": [[2006]]
+    }
   }
 ]
