@@ -19,8 +19,9 @@ class referencesProvider
     else
       @buildWordListFromFiles(atom.config.get "autocomplete-citeproc.references")
 
-    if @references.length == 0
-      @buildWordListFromFiles(atom.config.get "autocomplete-citeproc.references")
+    if @references
+      if @references.length == 0
+        @buildWordListFromFiles(atom.config.get "autocomplete-citeproc.references")
 
     atom.config.onDidChange "autocomplete-citeproc.references", (referencesFiles) =>
       @buildWordListFromFiles(referencesFiles)
@@ -165,7 +166,8 @@ class referencesProvider
 
   buildWordListFromFiles: (referencesFiles) =>
     @readreferencesFiles(referencesFiles)
-    @buildWordList()
+    if @references
+      @buildWordList()
 
   readreferencesFiles: (referencesFiles) =>
     if referencesFiles.newValue?

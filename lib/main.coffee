@@ -42,7 +42,7 @@ module.exports =
     # containing class (which holds the serialize fn)
     if state and reload is false
       @referencesProvider = atom.deserializers.deserialize(state.provider)
-      #deserializer produces "undefined" if it fails, so double check
+      # deserializer produces "undefined" if it fails, so double check
       if not @referencesProvider
         @referencesProvider = new referencesProvider()
     else
