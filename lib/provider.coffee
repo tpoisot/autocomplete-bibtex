@@ -75,7 +75,7 @@ class referencesProvider
                 text: resultTemplate.replace("[key]", word.key)
                 displayText: word.title
                 replacementPrefix: prefix
-                # leftLabel: word.key
+                leftLabel: word.key
                 rightLabel: word.by
                 className: word.type
                 iconHTML: "<i class='icon-#{icon}'></i>"
