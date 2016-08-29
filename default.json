@@ -80,5 +80,21 @@
     "issued" : {
       "date-parts": [[2006]]
     }
+  },
+  {
+    "id" : "_underscore",
+    "page" : "1-7",
+    "type" : "article-journal",
+    "title": "not a test at all",
+    "author": [
+      {
+        "family": "underscore",
+        "given": "mister",
+        "static-ordering": false
+      }
+    ],
+    "issued" : {
+      "date-parts": [[2006]]
+    }
   }
 ]
