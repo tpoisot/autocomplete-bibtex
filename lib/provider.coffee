@@ -115,10 +115,10 @@ class referencesProvider
 
         if citation.author?
           citation.authors =
-            @prettifyAuthors citation.author.concat @cleanAuthors citation.author
+            @prettifyAuthors @cleanAuthors citation.author
         if citation.editor?
           citation.editors =
-            @prettifyAuthors citation.editor.concat @cleanAuthors citation.editor
+            @prettifyAuthors @cleanAuthors citation.editor
 
         date = ""
         if citation.issued?
@@ -210,8 +210,16 @@ class referencesProvider
       return authors
 
   prettifyAuthors: (authors) ->
+    console.log authors.length
+    console.log authors
     name = @prettifyName authors[0]
-    if authors.length > 1 then "#{name} et al." else "#{name}"
+    author_string = "#{name}"
+    if authors.length == 2
+      name2 = @prettifyName authors[1]
+      author_string = "#{name} & #{name2}"
+    if authors.length > 2
+      author_string = "#{name} et al."
+    return author_string
 
   prettifyName: (person, separator = ' ') ->
       (if person.family? then person.family else '')

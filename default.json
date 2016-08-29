@@ -91,6 +91,14 @@
         "family": "underscore",
         "given": "mister",
         "static-ordering": false
+      },
+      {
+        "family": "Grignon",
+        "given": "Cyril"
+      },
+      {
+        "family": "Sentenac",
+        "given": "Corey"
       }
     ],
     "issued" : {
