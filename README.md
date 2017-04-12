@@ -19,7 +19,7 @@ removed.
 - Works with citeproc
 - Gives context for each reference, including URL to source
 - Icons for different types of documents
-- Uses autocomplete-+ 2
+- Uses autocomplete-+ v. 2
 
 ## Screenshot
 
