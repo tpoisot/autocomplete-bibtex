@@ -210,8 +210,6 @@ class referencesProvider
       return authors
 
   prettifyAuthors: (authors) ->
-    console.log authors.length
-    console.log authors
     name = @prettifyName authors[0]
     author_string = "#{name}"
     if authors.length == 2

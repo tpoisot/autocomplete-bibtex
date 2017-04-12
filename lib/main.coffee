@@ -28,7 +28,6 @@ module.exports =
       referencesFiles = atom.config.get "autocomplete-citeproc.references"
       @stateTime = state.saveTime
       if not Array.isArray(referencesFiles)
-        # TODO remove this bloc after testing
         referencesFiles = [referencesFiles]
       # reload everything if any files changed
       for file in referencesFiles
