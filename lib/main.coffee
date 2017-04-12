@@ -31,7 +31,6 @@ module.exports =
       projectpath = atom.project?.getPaths()[0]
       for t in tempReferencesFiles
         tfile = [projectpath, t].join("/")
-        console.log tfile
         try
           stats = fs.statSync(tfile)
           if stats.isFile()
@@ -43,7 +42,6 @@ module.exports =
         referencesFiles = [referencesFiles]
       # reload everything if any files changed
       for file in referencesFiles
-        console.log file
         try
           stats = fs.statSync(file)
           if stats.isFile()

@@ -13,20 +13,34 @@ class referencesProvider
   @deserialize: ({data}) -> new referencesProvider(data)
 
   constructor: (state) ->
+
+    tempReferencesFiles = atom.config.get "autocomplete-citeproc.references"
+    referencesFiles = []
+    # Add the reference files
+    projectpath = atom.project?.getPaths()[0]
+    for t in tempReferencesFiles
+      tfile = [projectpath, t].join("/")
+      try
+        stats = fs.statSync(tfile)
+        if stats.isFile()
+          referencesFiles.push(tfile)
+      catch error
+        console.log "No such reference file"
+
     if state and Object.keys(state).length != 0
       @references = state.references
       @possibleWords = state.possibleWords
     else
-      @buildWordListFromFiles(atom.config.get "autocomplete-citeproc.references")
+      @buildWordListFromFiles(referencesFiles)
 
     if @references
       if @references.length == 0
-        @buildWordListFromFiles(atom.config.get "autocomplete-citeproc.references")
+        @buildWordListFromFiles(referencesFiles)
 
     atom.config.onDidChange "autocomplete-citeproc.references", (referencesFiles) =>
       @buildWordListFromFiles(referencesFiles)
 
-    @buildWordListFromFiles(atom.config.get "autocomplete-citeproc.references")
+    @buildWordListFromFiles(referencesFiles)
     allwords = @possibleWords
 
     resultTemplate = atom.config.get "autocomplete-citeproc.resultTemplate"
