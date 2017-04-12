@@ -1,5 +1,5 @@
 fs = require "fs"
-path = require 'path'
+path = require "path"
 
 referencesProvider = require "./provider"
 pathWatcher = require 'pathwatcher'
@@ -44,7 +44,7 @@ module.exports =
           console.log "No references file is present"
 
     # Need to distinguish between the Autocomplete provider and the
-    # containing class (which holds the serialize fn)
+    # containing class (which holds the serialize function)
     if state and reload is false
       @referencesProvider = atom.deserializers.deserialize(state.provider)
       # deserializer produces "undefined" if it fails, so double check
