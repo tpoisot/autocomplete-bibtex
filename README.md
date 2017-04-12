@@ -14,6 +14,9 @@ removed.
 
 [autocomplete-bibtex]: https://github.com/apcshields/autocomplete-bibtex
 
+The package will look for files called `bibliography.json`, `default.json`, or
+`references.json`, stored *at the root of the project*.
+
 ## Key features
 
 - Works with citeproc
