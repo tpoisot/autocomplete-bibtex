@@ -9,7 +9,7 @@ module.exports =
   config:
     references:
       type: 'array'
-      default: []
+      default: ['default.json', 'bibliography.json', 'references.json']
       items:
         type: 'string'
     scope:
@@ -25,12 +25,25 @@ module.exports =
   activate: (state) ->
     reload = false
     if state
-      referencesFiles = atom.config.get "autocomplete-citeproc.references"
+      tempReferencesFiles = atom.config.get "autocomplete-citeproc.references"
+      referencesFiles = []
+      # Add the reference files
+      projectpath = atom.project?.getPaths()[0]
+      for t in tempReferencesFiles
+        tfile = [projectpath, t].join("/")
+        console.log tfile
+        try
+          stats = fs.statSync(tfile)
+          if stats.isFile()
+            referencesFiles.push(tfile)
+        catch error
+          console.log "No such reference file"
       @stateTime = state.saveTime
       if not Array.isArray(referencesFiles)
         referencesFiles = [referencesFiles]
       # reload everything if any files changed
       for file in referencesFiles
+        console.log file
         try
           stats = fs.statSync(file)
           if stats.isFile()
