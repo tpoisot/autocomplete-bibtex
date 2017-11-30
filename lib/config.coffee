@@ -4,6 +4,7 @@ os = require 'os'
 
 texmfBibtexPath = undefined
 
+# TODO use pandoc data-dir
 getTexmfBibtexPath = ->
   unless texmfBibtexPath?
     ENV = null
@@ -32,4 +33,4 @@ module.exports =
     type: 'boolean'
     order: 1
     default: false
-    description: 'Add the bibtex entries in the global files to the suggestions list.'
+    description: 'Add the JSON entries in the global files to the suggestions list.'

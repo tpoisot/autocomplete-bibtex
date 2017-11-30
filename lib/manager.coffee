@@ -4,8 +4,8 @@ fs = promisify('fs')
 glob = require 'glob'
 path = require 'path'
 Fuse = require 'fuse.js'
-bibtexParse = require './lite-bibtex-parse'
-referenceTools = require './reference-tools'
+# bibtexParse = require './parser'
+referenceTools = require './tools'
 
 module.exports =
 class CiteManager
@@ -26,11 +26,11 @@ class CiteManager
     },
     {
         "name": "author.given",
-        "weight": 0.6
+        "weight": 0.1
     },
     {
         "name": "id",
-        "weight": 0.1
+        "weight": 0.6
     }]
 
 
@@ -119,9 +119,11 @@ class CiteManager
       @globalPathWatcher = undefined
 
   addFilesFromFolder: (folder) ->
-    files = glob.sync(path.join(folder, '**/*.bib'))
+    # We want local files that are called references, bibliography, or default (.json)
+    files = glob.sync(path.join(folder, '**/*(references|bibliography|default).json'))
     promises = []
     for file in files
+      console.log "Added", file
       promises.push(@addBibtexFile(file))
     return Promise.all(promises)
 
@@ -139,20 +141,20 @@ class CiteManager
     return new Promise((resolve, reject) =>
       fs.readFile(file, 'utf8').then( (content) =>
 
-        bibtex = bibtexParse.toJSON(content)
-        bibtex = referenceTools.enhanceReferences(bibtex)
+        references = JSON.parse(content)
+        references = referenceTools.enhanceReferences(references)
 
-        for el in bibtex
+        for el in references
           el['sourcefile'] = file
           @database[el['id']] = el
 
         @fuse = new Fuse(Object.values(@database),fuseOptions)
         resolve(@database)
       ).catch( (error) ->
-        message = "Autocomplete Latex Cite Warning"
+        message = "Autocomplete Citeproc Warning"
         options = {
           'dismissable': true
-          'description': """Unable to parse Bibtex file #{file}. It will be
+          'description': """Unable to parse references file #{file}. It will be
           ignored for autocompletion. (`#{error.message}`)
           """
         }
