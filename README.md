@@ -10,9 +10,10 @@ This package allows autocompletion of references keys from a file in the
 citeproc format (either as `json`  or `yaml`). The citeproc format is used
 natively by pandoc, and offers support for more document types than bibtex does.
 This package is a fork of [autocomplete-bibtex], with the bibtex-only code
-removed.
+removed, and some code from [autocomplete-latex-cite].
 
 [autocomplete-bibtex]: https://github.com/apcshields/autocomplete-bibtex
+[autocomplete-latex-cite]: https://github.com/hesstobi/atom-autocomplete-latex-cite
 
 The package will look for files called `bibliography.json`, `default.json`, or
 `references.json`, stored *at the root of the project*.
