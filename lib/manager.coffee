@@ -4,7 +4,6 @@ fs = promisify('fs')
 glob = require 'glob'
 path = require 'path'
 Fuse = require 'fuse.js'
-# bibtexParse = require './parser'
 referenceTools = require './tools'
 
 module.exports =
@@ -41,7 +40,7 @@ class CiteManager
 
   handleWatcherEvents: (events) =>
     # Filter for bib files
-    events = events.filter (e) -> /bib$/.test(e.path)
+    events = events.filter (e) -> /(references|bibliography|default).json/.test(e.path)
     # Filter multiple events for one file
     flags = {}
     events = events.reverse().filter (e) ->
@@ -124,7 +123,6 @@ class CiteManager
     files = glob.sync(path.join(folder, '**/*(references|bibliography|default).json'))
     promises = []
     for file in files
-      console.log "Added", file
       promises.push(@addBibtexFile(file))
     return Promise.all(promises)
 
