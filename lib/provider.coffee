@@ -11,7 +11,7 @@ class CiteProvider
   # Priorities for autocomplete
   inclusionPriority: 2
   suggestionPriority: 3
-  excludeLowerPriority: false
+  excludeLowerPriority: true
   # We want citations to be triggered by the @ symbol
   commandList: "@"
 
@@ -20,9 +20,7 @@ class CiteProvider
     @manager.initialize()
 
   getSuggestions: ({editor, bufferPosition}) ->
-    console.log "getSuggestions"
     prefix = @getPrefix(editor, bufferPosition)
-    console.log prefix
     return unless prefix?.length
     new Promise (resolve) =>
       results = @manager.searchForPrefixInDatabase(prefix)
@@ -33,20 +31,22 @@ class CiteProvider
       resolve(suggestions)
 
   suggestionForResult: (result, prefix) ->
-    console.log "suggestionForResult"
+    console.log result
     iconClass = "icon-mortar-board"
-    if (result.class == 'article' || result.class == 'inproceedings' || result.class == "incollection")
+    if (result.type == 'article-journal' || result.type == 'inproceedings' || result.type == "incollection")
       iconClass = "icon-file-text"
-    else if (result.class == 'book' ||  result.class == 'inbook')
+    else if (result.type == 'book' ||  result.type == 'chapter')
       iconClass = "icon-repo"
 
     suggestion =
       text: result.id
+      leftLabel: result.id
       replacementPrefix: prefix
-      type: result.class
+      type: result.type
       className: 'citeproc-cite'
-      descriptionMarkdown: result.markdownCite
-      descriptionMoreURL: result.url
+      displayText: result.prettyTitle
+      descriptionMarkdown: result.prettyAuthors
+      descriptionMoreURL: result.URL
       iconHTML: "<i class=\"#{iconClass}\"></i>"
 
   onDidInsertSuggestion: ({editor, triggerPosition, suggestion}) ->
@@ -55,7 +55,6 @@ class CiteProvider
     @manager = []
 
   getPrefix: (editor, bufferPosition) ->
-    console.log "getPrefix"
     cmdprefixes = @commandList
 
     # Whatever your prefix regex might be
@@ -65,6 +64,5 @@ class CiteProvider
             ///
     # Get the text for the line up to the triggered buffer position
     line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
-    console.log line
     # Match the regex to the line, and return the match
     line.match(regex)?[2] or ''
