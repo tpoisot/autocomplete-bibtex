@@ -33,7 +33,6 @@ class CiteManager
         "weight": 0.6
     }]
 
-
   constructor: ->
     @disposables = new CompositeDisposable
     @database = {}

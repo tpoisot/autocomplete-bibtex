@@ -10,7 +10,6 @@ module.exports =
   activate: ->
     @subscriptions = new CompositeDisposable()
 
-
   deactivate: ->
     @provider = null
     @subscriptions.dispose()
