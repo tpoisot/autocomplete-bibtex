@@ -7,10 +7,10 @@ Adds citation key autocompletion to
 [Atom]: http://atom.io/
 
 This package allows autocompletion of references keys from a file in the
-citeproc format (either as `json`  or `yaml`). The citeproc format is used
-natively by pandoc, and offers support for more document types than bibtex does.
-This package is a fork of [autocomplete-bibtex], with the bibtex-only code
-removed, and some code from [autocomplete-latex-cite].
+citeproc format (as `json`). The citeproc format is used natively by pandoc, and
+offers support for more document types than bibtex does. This package is a fork
+of [autocomplete-bibtex], with the bibtex-only code removed, and some code from
+[autocomplete-latex-cite].
 
 [autocomplete-bibtex]: https://github.com/apcshields/autocomplete-bibtex
 [autocomplete-latex-cite]: https://github.com/hesstobi/atom-autocomplete-latex-cite
@@ -20,7 +20,7 @@ The package will look for files called `bibliography.json`, `default.json`, or
 
 ## Key features
 
-- Works with citeproc
+- Works with citeproc JSON files
 - Gives context for each reference, including URL to source
 - Icons for different types of documents
 - Uses autocomplete-+ v. 2

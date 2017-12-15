@@ -55,6 +55,8 @@ class CiteManager
           @addBibtexFile(e.path)
         when "modified"
           @addBibtexFile(e.path)
+        when "renamed"
+          @addBibtexFile(e.path)
         when "deleted"
           @removeBibtexFile(e.path)
 
