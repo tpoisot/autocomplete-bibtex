@@ -17,11 +17,11 @@ class CiteManager
     minMatchCharLength: 1,
     keys: [{
         "name": "title",
-        "weight": 0.3
+        "weight": 0.4
     },
     {
         "name": "author.family",
-        "weight": 0.6
+        "weight": 0.9
     },
     {
         "name": "author.given",
@@ -29,7 +29,7 @@ class CiteManager
     },
     {
         "name": "id",
-        "weight": 0.6
+        "weight": 0.7
     }]
 
   constructor: ->
