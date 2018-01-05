@@ -23,6 +23,7 @@ The package will look for files called `bibliography.json`, `default.json`, or
 - Works with citeproc JSON files
 - Gives context for each reference, including URL to source
 - Icons for different types of documents
+- Reload as the references are changed
 - Uses autocomplete-+ v. 2
 
 ## Screenshot
