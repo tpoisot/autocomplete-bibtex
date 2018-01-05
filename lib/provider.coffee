@@ -9,9 +9,9 @@ class CiteProvider
   # We don't want it to work in comments
   disableForSelector: '.comment'
   # Priorities for autocomplete
-  inclusionPriority: 2
-  suggestionPriority: 3
-  excludeLowerPriority: true
+  inclusionPriority: 1
+  suggestionPriority: 1
+  excludeLowerPriority: false
   # We want citations to be triggered by the @ symbol
   commandList: "@"
 
