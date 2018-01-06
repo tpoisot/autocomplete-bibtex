@@ -72,8 +72,8 @@ class CiteManager
     @disposables.add watcher
 
     # handle global Path
-    if atom.config.get('autocomplete-latex-cite.includeGlobalBibFiles')
-      if atom.config.get('autocomplete-latex-cite.globalBibPath')
+    if atom.config.get('autocomplete-citeproc.includeGlobalBibFiles')
+      if atom.config.get('autocomplete-citeproc.globalBibPath')
         promises.push(@addGlobalBibFiles())
 
     # Subscripe to events
@@ -82,15 +82,15 @@ class CiteManager
     return Promise.all(promises)
 
   subscripeForConfigChanges: () ->
-    atom.config.onDidChange 'autocomplete-latex-cite.includeGlobalBibFiles', ({newValue, oldValue}) =>
+    atom.config.onDidChange 'autocomplete-citeproc.includeGlobalBibFiles', ({newValue, oldValue}) =>
       if newValue
-        if atom.config.get('autocomplete-latex-cite.globalBibPath')
+        if atom.config.get('autocomplete-citeproc.globalBibPath')
           @addGlobalBibFiles()
       else
         @removeGlobalBibFiles()
-    atom.config.onDidChange 'autocomplete-latex-cite.globalBibPath', ({newValue, oldValue}) =>
+    atom.config.onDidChange 'autocomplete-citeproc.globalBibPath', ({newValue, oldValue}) =>
       if newValue
-        if atom.config.get('autocomplete-latex-cite.includeGlobalBibFiles')
+        if atom.config.get('autocomplete-citeproc.includeGlobalBibFiles')
           @removeGlobalBibFiles()
           @addGlobalBibFiles()
       else
@@ -98,7 +98,7 @@ class CiteManager
 
   addGlobalBibFiles: () ->
     return new Promise ( (resolve) =>
-      globalPath = atom.config.get('autocomplete-latex-cite.globalBibPath')
+      globalPath = atom.config.get('autocomplete-citeproc.globalBibPath')
       @addFilesFromFolder(globalPath).then( (result) =>
         watchPath(globalPath,{},( (events) =>
           @handleWatcherEvents(events))).then ( (watcherDisposal) =>

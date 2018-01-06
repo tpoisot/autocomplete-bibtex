@@ -1,10 +1,9 @@
-# autocomplete-citeproc package
+# Work with citeproc formatted bibliographies
 
-Adds citation key autocompletion to
-[autocomplete+] for [Atom].
+This package uses [autocomplete+] and notifications to (i) autocomplete citation
+keys from a JSON file and (ii) inspect the content of references.
 
 [autocomplete+]: https://github.com/saschagehlich/autocomplete-plus
-[Atom]: http://atom.io/
 
 This package allows autocompletion of references keys from a file in the
 citeproc format (as `json`). The citeproc format is used natively by pandoc, and
@@ -23,8 +22,9 @@ The package will look for files called `bibliography.json`, `default.json`, or
 - Works with citeproc JSON files
 - Gives context for each reference, including URL to source
 - Icons for different types of documents
-- Reload as the references are changed
+- Reload references in real time
 - Uses autocomplete-+ v. 2
+- Press `ctrl-alt-p` to see the content of the citation key under the cursor
 
 ## Screenshot
 
