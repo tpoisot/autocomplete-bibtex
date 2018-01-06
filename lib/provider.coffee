@@ -31,7 +31,7 @@ class CiteProvider
       resolve(suggestions)
 
   suggestionForResult: (result, prefix) ->
-    console.log result
+    #console.log result
     iconClass = "icon-mortar-board"
     if (result.type == 'article-journal' || result.type == 'inproceedings' || result.type == "incollection")
       iconClass = "icon-file-text"

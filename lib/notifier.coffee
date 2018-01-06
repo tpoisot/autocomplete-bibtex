@@ -1,0 +1,2 @@
+notify: ->
+  console.log "xx"
