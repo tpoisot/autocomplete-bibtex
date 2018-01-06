@@ -1,7 +1,7 @@
 {
   "name": "autocomplete-citeproc",
   "main": "./lib/main",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Uses Autocomplete+ to fill-in keys from citeproc (JSON and YAML) files.",
   "author": "tpoisot",
   "license": "MIT",
