@@ -1,2 +1,3 @@
 "atom-text-editor":
   "ctrl-alt-p": "autocomplete-citeproc:notify"
+  "ctrl-alt-b": "autocomplete-citeproc:bibliography"
