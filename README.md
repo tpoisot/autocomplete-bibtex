@@ -25,6 +25,7 @@ The package will look for files called `bibliography.json`, `default.json`, or
 - Reload references in real time
 - Uses autocomplete-+ v. 2
 - Press `ctrl-alt-p` to see the content of the citation key under the cursor
+- Press `ctrl-alt-b` to see a pane with all the references - clicking on a reference adds it under the cursor
 
 ## Screenshot
 
