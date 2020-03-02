@@ -27,3 +27,27 @@ autocomplete-suggestion-list {
   .make-type-icon(article-journal, @syntax-color-variable);
 
 }
+
+#citeproc-bibliography {
+  padding: 0.5em;
+  .citeproc-reference {
+    border: 1px solid @pane-item-background-color;
+    background-color: @pane-item-background-color;
+    &:hover {
+      border: 1px solid @pane-item-border-color;
+    }
+    padding: 0.4em;
+    margin-bottom: 0.4em;
+    .title {
+      color: @text-color;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-height: 2.8em;
+      line-height: 1.4;
+      margin-bottom: 0.2em;
+    }
+    .author {
+      color: @text-color-subtle;
+    }
+  }
+}

@@ -4,7 +4,6 @@ os = require 'os'
 
 texmfBibtexPath = undefined
 
-# TODO use pandoc data-dir
 getTexmfBibtexPath = ->
   unless texmfBibtexPath?
     ENV = null
