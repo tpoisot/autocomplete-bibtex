@@ -2,7 +2,7 @@
   "name": "autocomplete-citeproc",
   "main": "./lib/main",
   "version": "2.0.0",
-  "description": "Uses Autocomplete+ to fill-in keys from citeproc (JSON and YAML) files.",
+  "description": "Uses Autocomplete+ to fill-in keys from citeproc JSON files.",
   "author": "tpoisot",
   "license": "MIT",
   "engines": {
@@ -12,7 +12,6 @@
     "citation-js": "^0.3.4",
     "fuse.js": "^3.4.6",
     "glob": "^7.1.6",
-    "latex-to-unicode-converter": "^0.5.4",
     "promisify-node": "^0.5.0"
   },
   "repository": {
