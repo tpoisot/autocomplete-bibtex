@@ -45,7 +45,7 @@ class CiteProvider
       type: result.type
       className: 'citeproc-cite'
       displayText: result.prettyTitle.replace(/(^.{35}).*$/,'$1...')
-      descriptionMarkdown: result.prettyAuthors
+      description: result.prettyAuthors.concat(" ").concat(result.prettyYear).concat(" ").concat(result.prettyTitle)
       descriptionMoreURL: result.URL
       iconHTML: "<i class=\"#{iconClass}\"></i>"
 

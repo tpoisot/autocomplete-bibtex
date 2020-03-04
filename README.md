@@ -19,14 +19,26 @@ The package will look for files called `bibliography.json`, `default.json`, or
 
 ## Key features
 
-- Works with citeproc JSON files
-- Gives context for each reference, including URL to source
+- Works with citeproc JSON files (as exported by [BetterBibTeX] for zotero )
+- Gives context for each reference (author, year, title), including URL to source through the URL or DOI fields
 - Icons for different types of documents
 - Reload references in real time
 - Uses autocomplete-+ v. 2
 - Press `ctrl-alt-p` to see the content of the citation key under the cursor
 - Press `ctrl-alt-b` to see a pane with all the references - clicking on a reference adds it under the cursor
 
-## Screenshot
+[BetterBibTeX]: https://retorque.re/zotero-better-bibtex/
 
-![screenshot](img/scrot.png)
+## Screenshots
+
+### Autocompletion
+
+![screenshot](img/scr-compl.png)
+
+### Inspection of references
+
+![screenshot](img/scr-notif.png)
+
+### Bibliography pane
+
+![screenshot](img/scr-biblio.png)

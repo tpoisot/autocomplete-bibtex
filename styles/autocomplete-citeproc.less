@@ -29,25 +29,41 @@ autocomplete-suggestion-list {
 }
 
 #citeproc-bibliography {
-  padding: 0.5em;
+  padding: 0em;
+  overflow: scroll;
   .citeproc-reference {
-    border: 1px solid @pane-item-background-color;
-    background-color: @pane-item-background-color;
-    &:hover {
-      border: 1px solid @pane-item-border-color;
+    &:nth-child(odd) {
+      background-color: @pane-item-background-color;
     }
-    padding: 0.4em;
+    padding: 0.6em;
     margin-bottom: 0.4em;
     .title {
-      color: @text-color;
+      color: @text-color-subtle;
       text-overflow: ellipsis;
       overflow: hidden;
       max-height: 2.8em;
+      height: 2.8em;
       line-height: 1.4;
-      margin-bottom: 0.2em;
     }
-    .author {
-      color: @text-color-subtle;
+    .cite {
+      color: @text-color;
+      .author {
+        font-weight: bold;
+      }
+      .year {
+        padding-left: 0.3em;
+      }
+      button {
+        float: right;
+        background-color: @tool-panel-background-color;
+        color: @text-color-subtle;
+        border: 1px solid @button-background-color-selected;
+        border-radius: @component-border-radius;
+        &:hover {
+          background-color: @button-background-color-selected;
+          color: @base-background-color;
+        }
+      }
     }
   }
 }
